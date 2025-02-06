@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:my_first_app/routes.dart'; // Import route file
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -8,40 +11,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(),
+      title: 'Flutter Routes Demo',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(primarySwatch: Colors.blue),
+      initialRoute: AppRoutes.home, // Use AppRoutes instead of hardcoded routes
+      routes: AppRoutes.routes, // Use the centralized routes
     );
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("Home Page"),
-          backgroundColor: Colors.amber,
-        ),
-        body: Container(
-          height: 200,
-          color: Colors.blue,
-          margin: EdgeInsets.all(20),
-          child: Center(
-              child: Text(
-            "Hello world",
-            style: TextStyle(
-              fontSize: 30,
-              color: Colors.red,
-              backgroundColor: Colors.yellow,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 2.5,
-            ),
-          )),
-        ));
   }
 }
