@@ -1,16 +1,17 @@
 class UserModel {
+  final int id;
   final String name;
   final int age;
 
-  UserModel({required this.name, required this.age});
+  UserModel({required this.id, required this.name, required this.age});
 
-  // Factory method for creating an object from JSON
+  // Convert JSON to UserModel
   factory UserModel.fromJson(Map<String, dynamic> json) {
-    return UserModel(name: json['name'], age: json['age']);
+    return UserModel(id: json['id'], name: json['name'], age: json['age']);
   }
 
-  // Convert object to JSON
+  // Convert UserModel to JSON
   Map<String, dynamic> toJson() {
-    return {'name': name, 'age': age};
+    return {'id': id, 'name': name, 'age': age};
   }
 }
