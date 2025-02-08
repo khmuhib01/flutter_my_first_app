@@ -1,125 +1,136 @@
 import 'package:flutter/material.dart';
-import 'package:my_first_app/controllers/home_controller.dart';
-import 'package:my_first_app/controllers/user_controller.dart';
-import 'package:my_first_app/widgets/custom_button.dart';
+import 'package:my_first_app/view/about_me_page.dart';
+import 'package:my_first_app/view/profile_page.dart';
+import 'package:my_first_app/view/settings_page.dart';
+import 'package:my_first_app/view/tab_view_page.dart';
+import 'package:my_first_app/view/tabs/home_tab.dart';
+import 'package:my_first_app/view/tabs/profile_tab.dart';
+import 'package:my_first_app/view/tabs/search_tab.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: const MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  final HomeController _homeController = HomeController();
-  final UserController _userController = UserController();
-
-  bool isChecked = false; // ✅ Define state variable for checkbox
-
-  // Helper function to create buttons
-  Widget _buildButton({
-    required String text,
-    required String route,
-    required dynamic controller,
-    Color? color,
-    IconData? icon,
-  }) {
-    return CustomButton(
-      text: text,
-      routeName: route,
-      controller: controller,
-      color: color,
-      icon: icon,
-    );
-  }
-
+class _HomePageState extends State<HomePage> {
+  int _currentIndex = 0;
+  // List of pages for different tabs
+  final List<Widget> _pages = [
+    const HomeTab(),
+    const SearchTab(),
+    const ProfileTab(),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Home Page"),
+        title: Text("Home Page"),
         backgroundColor: Colors.amber,
       ),
-      body: Center(
+      body: _pages[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: "Search",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: "Profile",
+          ),
+        ],
+        selectedItemColor: Colors.amber,
+        unselectedItemColor: Colors.grey,
+      ),
+      drawer: Drawer(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Display the sum value
-            Text(
-              "Sum of Numbers: ${_homeController.sum}",
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            UserAccountsDrawerHeader(
+              accountName: Text("John Doe"),
+              accountEmail: Text("johndoe@example.com"),
+              currentAccountPicture: CircleAvatar(
+                backgroundImage: AssetImage(
+                    "assets/profile.jpg"), // Replace with an actual image
+              ),
+              decoration: BoxDecoration(
+                color: Colors.amber,
+              ),
             ),
-            const SizedBox(height: 20),
-
-            // ✅ Checkbox with working state
-            Checkbox(
-              value: isChecked,
-              onChanged: (bool? newValue) {
+            ListTile(
+              leading: Icon(Icons.home, color: Colors.amber),
+              title: Text('Home'),
+              onTap: () {
                 setState(() {
-                  isChecked = newValue ?? false; // ✅ Update the state
+                  _currentIndex = 0;
                 });
-                print("Checkbox value changed: $isChecked");
+                Navigator.pop(context);
               },
             ),
-
-            // Buttons for navigation
-            _buildButton(
-                text: "Container Learn",
-                route: '/container',
-                controller: _homeController),
-            _buildButton(
-                text: "Row Column Learn",
-                route: '/rowcolumn',
-                controller: _homeController),
-            _buildButton(
-                text: "List View Learn",
-                route: '/listview',
-                controller: _homeController),
-            _buildButton(
-              text: "Container Learn",
-              route: '/container',
-              controller: _homeController,
-              color: Colors.red,
-              icon: Icons.check_circle,
+            ListTile(
+              leading: Icon(Icons.person, color: Colors.amber),
+              title: Text('Profile'),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const ProfilePage();
+                }));
+              },
             ),
-            _buildButton(
-              text: "User Screen",
-              route: '/user',
-              controller: _userController,
-              color: Colors.green,
-              icon: Icons.person,
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.settings, color: Colors.grey),
+              title: Text('Settings'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return const SettingsPage();
+                  }),
+                );
+              },
             ),
-            _buildButton(
-              text: "User List",
-              route: '/user-list',
-              controller: _userController,
-              color: Colors.green,
-              icon: Icons.person,
+            ListTile(
+              leading: Icon(Icons.settings, color: Colors.grey),
+              title: Text('About me'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return const AboutMePage();
+                  }),
+                );
+              },
             ),
-            _buildButton(
-              text: "User Form",
-              route: '/user-list',
-              controller: _userController,
-              color: Colors.green,
-              icon: Icons.person,
+            ListTile(
+              leading: Icon(Icons.logout, color: Colors.red),
+              title: Text('Logout'),
+              onTap: () {
+                // Handle logout
+              },
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.amber,
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const TabViewPage(),
+          ),
+        ),
+        child: Icon(Icons.add),
       ),
     );
   }
