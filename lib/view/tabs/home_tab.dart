@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -29,7 +30,9 @@ class _HomeTabState extends State<HomeTab> {
       final response = await http
           .get(Uri.parse("https://jsonplaceholder.typicode.com/posts"));
 
-      print(response.body);
+      if (kDebugMode) {
+        print(response.body);
+      }
 
       if (response.statusCode == 200) {
         setState(() {
