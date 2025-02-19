@@ -5,6 +5,8 @@ import 'package:my_first_app/modules/product/controller/product_controller.dart'
 class ProductView extends StatelessWidget {
   final ProductController productController = Get.put(ProductController());
 
+  ProductView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +22,7 @@ class ProductView extends StatelessWidget {
               title: Text(product.name),
               subtitle: Text('\$${product.price.toString()}'),
               onTap: () {
-                Get.toNamed('/product-detail', arguments: product);
+                Get.toNamed('/product-details', arguments: product);
               },
             );
           },

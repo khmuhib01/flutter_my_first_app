@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_first_app/modules/product/view/product_view.dart';
 import 'package:my_first_app/view/about_me_page.dart';
 import 'package:my_first_app/view/profile_page.dart';
 import 'package:my_first_app/view/settings_page.dart';
@@ -84,6 +85,15 @@ class _HomePageState extends State<HomePage> {
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return const ProfilePage();
+                }));
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.person, color: Colors.amber),
+              title: Text('Product'),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return ProductView();
                 }));
               },
             ),
